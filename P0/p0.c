@@ -103,15 +103,43 @@ void processInput(char* chain) {
     if (splitChain(chain, piece) == 0) //no se han introducido palabras
         return;
 
+    if (splitChain(chain, piece) == 0) //no se han introducido palabras
+        return;
+
     if (!strcmp(piece[0], "authors"))
         cmdAuthors(piece[1]);
+
+
     else if (!strcmp(piece[0], "getpid"))
-        cmdGetPid(piece[1]);
-    else if (!strcmp(piece[0], "getppid"))
-        cmdGetPPid(piece[1]);
+        cmdGetpid(piece[1]);
+
+    else if(!strcmp(piece[0], "getppid"))
+        cmdGetppid(piece[1]);
+
     else if (!strcmp(piece[0], "pwd"))
-        cmd
-            else printf("%s: not found\n", piece[0]);
+        cmdPwd(piece[1]);
+
+    else if (!strcmp(piece[0], "chdir"))
+        cmdChdir(piece[1]);
+
+
+    else if(!strcmp(piece[0], "date"))
+        cmdDate(piece[1]);
+
+
+    else if(!strcmp(piece[0], "time"))
+        cmdTime(piece[1]);
+
+
+    else if (!strcmp(piece[0], "historic"))
+        cmdHistoric(piece[1]);
+
+
+    else if(!strcmp(piece[0], "quit") || !strcmp(piece[0],"end") || !strcmp(piece[0], "exit"))
+        *leave = 1;
+
+
+    else printf("%s: not found\n", piece[0]);
 }
 
 
