@@ -31,6 +31,20 @@ void createEmptyList(tList* L)
 }
 
 
+tPosL next (tPosL p, tList L)
+{
+    if(p==L.lastPos)
+        return LNULL;
+    else
+        return (p+1);
+}
+
+
+tPosL last(tList L)
+{
+    return L.lastPos;
+}
+
 
 bool insertItem(tItemL d, tPosL p, tList* L)
 {
@@ -69,6 +83,10 @@ bool insertItem(tItemL d, tPosL p, tList* L)
 
 //-----------------------------------------------------------
 
+int readInput(char* chain, tList* L) {
+    fgets(chain,MAX,stdin);
+    insertItem(chain, next(last(*L), *L), L);
+}
 
 int splitChain(char* chain, char* piece[]) {
     int i = 1;
@@ -86,21 +104,27 @@ void processInput(char* chain) {
         return;
 
     if (!strcmp(piece[0], "authors"))
-        cmdAuthors(piece + 1);
-    else if (!strcmp(piece[0], "chdir"))
-        cmdChdir(piece + 1);
+        cmdAuthors(piece[1]);
+    else if (!strcmp(piece[0], "getpid"))
+        cmdGetPid(piece[1]);
+    else if (!strcmp(piece[0], "getppid"))
+        cmdGetPPid(piece[1]);
     else if (!strcmp(piece[0], "pwd"))
-        cmdPwd(piece + 1);
-    else printf("%s: not found\n", piece[0]);
+        cmd
+            else printf("%s: not found\n", piece[0]);
 }
+
 
 
 int main() {
     char chain[MAX];
+    tList L;
+    createEmptyList(&L);
 
     while(true){
         printf("> ");
-        fgets(chain,MAX,stdin);
+        readInput(&chain, &L);
+        processInput(&chain);
     }
 
 
