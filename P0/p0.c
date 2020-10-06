@@ -79,7 +79,7 @@ bool insertItem(tItemL d, tPosL p, tList* L)
 
 
 
-
+//probando
 
 //-----------------------------------------------------------
 
@@ -97,7 +97,7 @@ int splitChain(char* chain, char* piece[]) {
     return i;
 }
 
-void processInput(char* chain) {
+void processInput(char* chain, bool* leave) {
     char* piece[MAX];
 
     if (splitChain(chain, piece) == 0) //no se han introducido palabras
@@ -136,7 +136,7 @@ void processInput(char* chain) {
 
 
     else if(!strcmp(piece[0], "quit") || !strcmp(piece[0],"end") || !strcmp(piece[0], "exit"))
-        *leave = 1;
+        *leave = true;
 
 
     else printf("%s: not found\n", piece[0]);
@@ -146,16 +146,18 @@ void processInput(char* chain) {
 
 int main() {
     char chain[MAX];
+    bool leave;
+    leave = false;
     tList L;
     createEmptyList(&L);
 
     while(true){
         printf("> ");
-        readInput(&chain, &L);
-        processInput(&chain);
+        readInput(chain, &L);
+        processInput(chain, &leave);
+        if(leave == true)
+            break;
     }
-
-
     return 0;
 }
 
