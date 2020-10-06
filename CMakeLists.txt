@@ -3,4 +3,4 @@ project(SO_shell C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(SO_shell P0/main.c)
+add_executable(SO_shell P0/p0.c)
