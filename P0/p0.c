@@ -11,7 +11,7 @@
 #define MAX 1024
 
 
-//STATIC LIST( CREATING THE ARRAY) -------------------------------------------------------
+//STATIC LIST (ARRAY) -------------------------------------------------------
 
 #define LNULL -1
 #define LMAX 4096
@@ -136,6 +136,8 @@ void cmdDate(char* argument){
 }
 
 //-----------------------------------------------------------
+
+//INPUT PROCESSING FUNCTIONS --------------------------------
 
 void readInput(char* chain, tList* L) {
     tItemL cmdData;
