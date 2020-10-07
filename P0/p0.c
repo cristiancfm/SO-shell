@@ -39,7 +39,7 @@ void createEmptyList(tList* L)
 }
 
 
-tPosL next (tPosL p, tList L)
+tPosL next(tPosL p, tList L)
 {
     if(p==L.lastPos)
         return LNULL;
@@ -47,6 +47,10 @@ tPosL next (tPosL p, tList L)
         return (p+1);
 }
 
+tPosL first(tList L)
+{
+    return 0;
+}
 
 tPosL last(tList L)
 {
@@ -81,6 +85,70 @@ bool insertItem(tItemL d, tPosL p, tList* L)
     }
 }
 
+tItemL getItem(tPosL p, tList L)
+{
+    return (L.data[p]);
+}
+
+tList deleteAtPosition (tPosL p, tList* L)
+{
+    tPosL i;
+    L->lastPos--;
+    for(i = p; i <= L->lastPos; i++)
+    {
+        L->data[i] = L->data[i+1];
+    }
+    return *L;
+}
+
+void printAllListCommands(tList L){
+    tPosL i;
+    for(i = first(L); i != LNULL; i = next(i, L)){
+        printf("%s\n", getItem(i, L).cmdName);
+    }
+}
+
+void printNListCommands(int cmdNumber, tList L){
+    tPosL i;
+    int iterationsCounter;
+
+    if(cmdNumber < 1)
+        printf("Error: impossible to print %d commands\n", cmdNumber);
+
+    iterationsCounter = 1;
+    i = first(L);
+    while(iterationsCounter <= cmdNumber && i != LNULL) {
+        printf("%s\n", getItem(i, L).cmdName);
+        i = next(i, L);
+        iterationsCounter++;
+    }
+}
+
+void clearListCommands(tList *L){
+    tPosL i;
+    for(i = first(*L); i != LNULL; i = next(i, *L)){
+        deleteAtPosition(i, L);
+    }
+    printf("Historic of commands cleared\n");
+}
+
+tItemL getListCommand(int cmdNumber, tList L){
+    tPosL i;
+    int iterationsCounter;
+
+    if(cmdNumber < 1)
+        printf("Error: impossible to get command number %d\n", cmdNumber);
+
+    iterationsCounter = 1;
+    i = first(L);
+    while(iterationsCounter <= cmdNumber && i != LNULL) {
+        i = next(i, L);
+        iterationsCounter++;
+    }
+
+    return getItem(i, L);
+}
+
 //-----------------------------------------------------------
 
 //CMD FUNCTIONS ---------------------------------------------
@@ -94,13 +162,13 @@ void cmdAuthors ( char * argument) {
 
     } else {
 
-        if (!strcmp(argument, "n")) {
+        if (!strcmp(argument, "-n")) {
 
 
             printf("cristian.ferreiro\n");
             printf("xoel.gonzalezp\n");
 
-        } else if (!strcmp(argument, "l")) {
+        } else if (!strcmp(argument, "-l")) {
 
             printf("Cristian Ferreiro Montoiro\n");
             printf("Xoel González Pereira\n");
@@ -129,8 +197,26 @@ void cmdPwd(char* argument){
     printf(" %s\n",getcwd(directory, MAX));
 }
 
+void cmdChdir(char* argument){
+
+}
 
 void cmdDate(char* argument){
+
+
+}
+
+void cmdTime(char* argument){
+
+}
+
+void cmdHistoric(char* argument, tList* L){
+    if (argument == NULL)
+        printAllListCommands(*L);
+
+    else if (!strcmp(argument, "-c"))
+        clearListCommands(L);
+
 
 
 }
@@ -155,7 +241,7 @@ int splitChain(char* chain, char* piece[]) {
     return i;
 }
 
-void processInput(char* chain, bool* leave) {
+void processInput(char* chain, bool* leave, tList* L) {
     char* piece[MAX];
 
     if (splitChain(chain, piece) == 0) //no se han introducido palabras
@@ -166,7 +252,6 @@ void processInput(char* chain, bool* leave) {
 
     if (!strcmp(piece[0], "authors"))
         cmdAuthors(piece[1]);
-
 
     else if (!strcmp(piece[0], "getpid"))
         cmdGetPid(piece[1]);
@@ -180,17 +265,14 @@ void processInput(char* chain, bool* leave) {
     else if (!strcmp(piece[0], "chdir"))
         cmdChdir(piece[1]);
 
-
     else if(!strcmp(piece[0], "date"))
         cmdDate(piece[1]);
-
 
     else if(!strcmp(piece[0], "time"))
         cmdTime(piece[1]);
 
-
     else if (!strcmp(piece[0], "historic"))
-        cmdHistoric(piece[1]);
+        cmdHistoric(piece[1], L);
 
 
     else if(!strcmp(piece[0], "quit") || !strcmp(piece[0],"end") || !strcmp(piece[0], "exit"))
@@ -212,7 +294,7 @@ int main() {
     while(true){
         printf("> ");
         readInput(chain, &L);
-        processInput(chain, &leave);
+        processInput(chain, &leave, &L);
         if(leave == true)
             break;
     }
