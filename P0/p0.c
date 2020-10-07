@@ -4,6 +4,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <time.h>
 
 #define MAX 1024
 
@@ -15,10 +18,15 @@
 
 
 //PARA CADA POSICION DE LA LISTA, ASIGNAMOS EL NOMBRE DEL ARCHIVO Y LA POSICION QUE OCUPA
-typedef char tItemL[MAX];
+typedef char tCmdName[MAX];
 typedef int tPosL;
+
+typedef struct tItemL{
+    tCmdName cmdName;
+} tItemL;
+
 typedef struct {
-    tItemL data;
+    tItemL data[LMAX];
     tPosL lastPos;
 } tList;
 
@@ -77,15 +85,63 @@ bool insertItem(tItemL d, tPosL p, tList* L)
 
 //CMD FUNCTIONS ---------------------------------------------
 
+void cmdAuthors ( char * argument) {
+
+    if (argument == NULL) {
+
+        printf("Cristian Ferreiro Montoiro: cristian.ferreiro\n");
+        printf("Xoel González Pereira: xoel.gonzalezp\n");
+
+    } else {
+
+        if (!strcmp(argument, "n")) {
 
 
-//probando
+            printf("cristian.ferreiro\n");
+            printf("xoel.gonzalezp\n");
+
+        } else if (!strcmp(argument, "l")) {
+
+            printf("Cristian Ferreiro Montoiro\n");
+            printf("Xoel González Pereira\n");
+
+        } else {
+
+            printf(" %s : unknown command argument\n", argument);
+
+        }
+
+    }
+}
+
+
+
+void cmdGetPid(char* argument){
+    printf("Shell PID: %d\n", getpid());
+}
+
+void cmdGetPPid(char* argument){
+    printf("Shell Parent PID: %d\n", getppid());
+}
+
+void cmdPwd(char* argument){
+    char directory[MAX];
+    printf(" %s\n",getcwd(directory, MAX));
+}
+
+
+void cmdDate(char* argument){
+
+
+}
 
 //-----------------------------------------------------------
 
-int readInput(char* chain, tList* L) {
+void readInput(char* chain, tList* L) {
+    tItemL cmdData;
     fgets(chain,MAX,stdin);
-    insertItem(chain, next(last(*L), *L), L);
+    strcpy(cmdData.cmdName, chain);
+    insertItem(cmdData, next(last(*L), *L), L);
 }
 
 int splitChain(char* chain, char* piece[]) {
@@ -111,10 +167,10 @@ void processInput(char* chain, bool* leave) {
 
 
     else if (!strcmp(piece[0], "getpid"))
-        cmdGetpid(piece[1]);
+        cmdGetPid(piece[1]);
 
     else if(!strcmp(piece[0], "getppid"))
-        cmdGetppid(piece[1]);
+        cmdGetPPid(piece[1]);
 
     else if (!strcmp(piece[0], "pwd"))
         cmdPwd(piece[1]);
