@@ -230,6 +230,7 @@ void readInput(char* chain, tList* L) {
     fgets(chain,MAX,stdin);
     strcpy(cmdData.cmdName, chain);
     insertItem(cmdData, next(last(*L), *L), L);
+
 }
 
 int splitChain(char* chain, char* piece[]) {
@@ -291,7 +292,7 @@ int main() {
     tList L;
     createEmptyList(&L);
 
-    while(true){
+    while(1){
         printf("> ");
         readInput(chain, &L);
         processInput(chain, &leave, &L);
