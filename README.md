@@ -1,4 +1,4 @@
-# SO_shell
+# SO-shell
 This repository contains lab assignments for the Operating Systems (Sistemas Operativos) subject in the FIC - UDC (Universidade da Coruña).
 
 # Overview
